@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: $K8S_DEPLOYMENT_NAME-$TARGET_ROLE
+  labels:
+    name: $K8S_DEPLOYMENT_NAME
+spec:
+  replicas: $REPLICAS
+  selector:
+    matchLabels:
+      name: $K8S_DEPLOYMENT_NAME
+  template:
+    metadata:
+      labels:
+        name: $K8S_DEPLOYMENT_NAME
+        role: $TARGET_ROLE
+    spec:
+      imagePullSecrets:
+        - name: gcrcred
+      containers:
+      - name: $K8S_DEPLOYMENT_NAME
+        image: $IMG_NAME:$IMG_TAG
+        imagePullPolicy: "Always"
+        ports:
+         - name: http
+           protocol: TCP
+           containerPort: 80
+
